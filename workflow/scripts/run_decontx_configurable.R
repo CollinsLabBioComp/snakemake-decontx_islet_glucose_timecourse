@@ -199,6 +199,27 @@ if (length(known_markers) == 0) {
   cat("Using", length(known_markers), "marker genes from configuration for tissue type:", tissue_type, "\n")
 }
 
+results <- logNormCounts(results)
+png(file.path(opts$outdir, "umap_marker_genes_pre.png"))
+plotDimReduceFeature(as.matrix(logcounts(results)),
+    dim1 = umap[, 1],
+    dim2 = umap[, 2],
+    features = known_markers,
+    exactMatch = TRUE,
+    useAssay = "counts"
+  )
+dev.off()
+
+png(file.path(opts$outdir, "umap_marker_genes_post.png"))
+plotDimReduceFeature(as.matrix(logcounts(results)),
+    dim1 = umap[, 1],
+    dim2 = umap[, 2],
+    features = known_markers,
+    exactMatch = TRUE,
+    useAssay = "decontXcounts"
+  )
+dev.off()
+
 # Create tissue-specific marker lists for barplots
 markers <- list()
 
@@ -225,39 +246,16 @@ if (!is.null(marker_config$cell_type_markers[[tissue_type]])) {
   )
 }
 
-
 png(file.path(opts$outdir, "barplots_marker_genes_pre.png"))
 plotDecontXMarkerPercentage(results,
     markers = markers,
-    assayName = c("counts"))
+    assayName = "counts")
 dev.off()
 
 png(file.path(opts$outdir, "barplots_marker_genes_post.png"))
 plotDecontXMarkerPercentage(results,
     markers = markers,
-    assayName = c("decontXcounts"))
-dev.off()
-
-results <- logNormCounts(results)
-
-png(file.path(opts$outdir, "umap_marker_genes_pre.png"))
-plotDimReduceFeature(as.matrix(logcounts(results)),
-    dim1 = umap[, 1],
-    dim2 = umap[, 2],
-    features = known_markers,
-    exactMatch = TRUE,
-    useAssay = "counts"
-  )
-dev.off()
-
-png(file.path(opts$outdir, "umap_marker_genes_post.png"))
-plotDimReduceFeature(as.matrix(logcounts(results)),
-    dim1 = umap[, 1],
-    dim2 = umap[, 2],
-    features = known_markers,
-    exactMatch = TRUE,
-    useAssay = "decontXcounts"
-  )
+    assayName = "decontXcounts")
 dev.off()
 
 
