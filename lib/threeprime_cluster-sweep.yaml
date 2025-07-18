@@ -1,11 +1,11 @@
 __default__:
-  memory: "80"
+  memory: "40"
   ntasks: "1"
   threads: "1"
   name: "JOBNAME.{rule}.{wildcards}"
   output: "logs/{rule}/smk.threeprime.{wildcards}.out"
   error: "logs/{rule}/smk.threeprime.{wildcards}.err"
-  time: "12:00:00"
+  time: "4:00:00"
 
 
 cellranger:
@@ -38,11 +38,3 @@ decontx_prelim:
 decontx_round2:
    memory: "50"
 
-seurat_prelim:
-   memory: 64
-
-seurat_round2:
-   memory: 64
-
-seurat_round3:
-   memory: 64
